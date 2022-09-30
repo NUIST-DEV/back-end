@@ -62,17 +62,9 @@ def get_image_by_name(image_name):
     return image
 
 
-def init(image_dir=None):
-    # load model
-    load_all_models()
-    # load variables
-    if image_dir is not None:
-        global IMAGES_DIR
-        IMAGES_DIR = image_dir
-
-
 class ModelHub:
     def __init__(self):
+        os.path.dirname(os.path.realpath(__file__))
         # check cuda
         if not torch.cuda.is_available():
             print('CUDA is not available.  No models will be loaded.')

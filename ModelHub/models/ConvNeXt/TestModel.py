@@ -1,6 +1,6 @@
 from IModel import IModel
 import torch
-import utils
+import mhutils
 import sys
 import os
 import numpy as np
@@ -229,7 +229,7 @@ class TestModel(IModel):
         if self.device is None:
             print('No device selected!')
         # print(__file__)
-        _dir, _file = utils.get_dir_and_file_name(__file__)
+        _dir, _file = mhutils.get_dir_and_file_name(__file__)
         # print(_dir)
         # print(_file)
         self.model = convnext_tiny(2).to(self.device)

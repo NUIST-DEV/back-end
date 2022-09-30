@@ -2,3 +2,9 @@ doc
 frontend
 images
 ml-frontend
+**/.idea
+*.pyc
+*/__pycache__
+*/.DS_Store
+*.pth
+*.pt
