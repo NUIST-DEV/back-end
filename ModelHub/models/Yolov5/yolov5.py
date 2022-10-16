@@ -12,20 +12,21 @@ import json
 
 
 # convert results.xyxyn to json
-def ConvertTensorToJSON(results):
+def ConvertTensorToJSON(results,width,height):
     tensor = results.xyxyn[0].cpu().detach().numpy().tolist()
+
     arr = []
     for i in range(len(tensor)):
         arr.append({
-            "x1": tensor[i][0],
-            "y1": tensor[i][1],
-            "x2": tensor[i][2],
-            "y2": tensor[i][3],
+            "x1": tensor[i][0]*width,
+            "y1": tensor[i][1]*height,
+            "x2": tensor[i][2]*width,
+            "y2": tensor[i][3]*height,
             "confidence": tensor[i][4],
             "class": int(tensor[i][5]),
             "verbose": results.names[int(tensor[i][5])]
         })
-    return json.dumps(arr)
+    return json.dumps({'anchorboxes':arr})
 
 class yolov5(IModel):
     def __init__(self, device='cuda') -> None:
@@ -50,6 +51,7 @@ class yolov5(IModel):
         return results
 
     def process(self, data):
+
         if self.device is None:
             return {'error': 'No device selected!'}
         if data is None:
@@ -58,7 +60,8 @@ class yolov5(IModel):
             return {'error': 'Data is not a dict!'}
         if "image" not in data.keys():
             return {'error': 'No image in data!'}
-        image = data["image"].to(self.device)
-
+        image = data["image"]
+        width, height = image.size
         results = self.model(image)
-        return ConvertTensorToJSON(results)
+        print(results)
+        return ConvertTensorToJSON(results,width, height)

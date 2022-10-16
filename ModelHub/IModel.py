@@ -6,6 +6,8 @@ class IModel:
     def process(self, data):
         pass
 
-    @abstractmethod
-    def predict(self, tensor):
-        pass
+    def set_device(self, device):
+        self.device = device
+        # if self has a model, set the device for the model
+        if hasattr(self, 'model'):
+            self.model.to(self.device)
